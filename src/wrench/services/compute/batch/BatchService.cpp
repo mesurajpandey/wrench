@@ -44,6 +44,7 @@ namespace wrench {
 
     BatchService::~BatchService() {
       MessageManager::cleanUpMessages(this->mailbox_name);
+      this->all_jobs.clear();
     }
 
 
