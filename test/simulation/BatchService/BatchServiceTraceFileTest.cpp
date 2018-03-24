@@ -99,6 +99,9 @@ private:
       unsigned long num_submitted_jobs = 0;
       {
         //Let's load the trace file
+        char wd[500];
+        getwd(wd);
+        std::cerr << "WORKING DIRECTORY IN DOCKER = " << wd << "\n";
         std::vector<std::tuple<std::string, double, double, double, double, unsigned int>>
                 trace_file_jobs = wrench::TraceFileLoader::loadFromTraceFile("test/trace_files/NASA-iPSC-1993-3.swf",
                                                                              0);
