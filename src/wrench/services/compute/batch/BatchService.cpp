@@ -637,7 +637,7 @@ namespace wrench {
     }
 
 
-    void BatchService::processPilotJobTimeout(PilotJob *job) {
+    void BatchService::stopPilotJobComputeService(PilotJob *job) {
       auto *cs = (BatchService *) job->getComputeService();
       if (cs == nullptr) {
         throw std::runtime_error(
@@ -1113,14 +1113,18 @@ namespace wrench {
           return true;
         } else if (msg->job->getWorkflowJob()->getType() == WorkflowJob::PILOT) {
           auto *pilot_job = (PilotJob *) msg->job->getWorkflowJob();
-          ComputeService *cs = pilot_job->getComputeService();
-          try {
-            cs->stop();
-          } catch (wrench::WorkflowExecutionException &e) {
-            throw std::runtime_error(
-                    "BatchService::processNextMessage(): Not able to terminate the pilot job"
-            );
-          }
+
+          this->stopPilotJobComputeService(pilot_job);
+//          ComputeService *cs = pilot_job->getComputeService();
+//          try {
+//            cs->stop();
+//          } catch (wrench::WorkflowExecutionException &e) {
+//            throw std::runtime_error(
+//                    "BatchService::processNextMessage(): Not able to terminate the pilot job"
+//            );
+//          }
+
+
           this->processPilotJobCompletion(pilot_job);
           return true;
         } else {
@@ -1376,12 +1380,8 @@ namespace wrench {
       for (auto it1 = this->running_jobs.begin(); it1 != this->running_jobs.end();) {
         if ((*it1)->getWorkflowJob() == job) {
           job_id = std::to_string((*it1)->getJobID());
-          this->processPilotJobTimeout((PilotJob *) (*it1)->getWorkflowJob());
-          // Update the cores count in the available resources
-          std::set<std::tuple<std::string, unsigned long, double>> resources = (*it1)->getResourcesAllocated();
-          for (auto r : resources) {
-            this->available_nodes_to_cores[std::get<0>(r)] += std::get<1>(r);
-          }
+          this->stopPilotJobComputeService((PilotJob *) (*it1)->getWorkflowJob());
+          this->freeUpResources((*it1)->getResourcesAllocated());
           ComputeServiceTerminatePilotJobAnswerMessage *answer_message = new ComputeServiceTerminatePilotJobAnswerMessage(
                   job, this, true, nullptr,
                   this->getPropertyValueAsDouble(

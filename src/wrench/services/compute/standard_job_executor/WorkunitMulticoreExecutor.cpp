@@ -242,7 +242,7 @@ namespace wrench {
 
         // Generate a SimulationTimestamp
         this->simulation->output.addTimestamp<SimulationTimestampTaskCompletion>(
-                new SimulationTimestampTaskCompletion(task));
+                new SimulationTimestampTaskCompletion(task,S4U_Simulation::getHostName().c_str()));
       }
 
       WRENCH_INFO("Done with all tasks");

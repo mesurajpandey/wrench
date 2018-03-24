@@ -1459,6 +1459,30 @@ private:
           }
           num_events++;
         }
+
+
+        //After all the events are done
+        //we need to check if the three tasks are allocated to the right hosts or not?
+        //task1 hostname should be the same as that of task 2
+
+        std::string task1_hostname = "WRONG";
+        std::string task2_hostname = "RIGHT";
+        for (auto sim_output:simulation->output.getTrace<wrench::SimulationTimestampTaskCompletion>()){
+          if (sim_output->getContent()->getTask()->getId() == "task1") {
+            task1_hostname = sim_output->getContent()->getHostName();
+          } else if (sim_output->getContent()->getTask()->getId() == "task2") {
+            task2_hostname = sim_output->getContent()->getHostName();
+          }
+        }
+
+
+        if (task1_hostname != task2_hostname) {
+          throw std::runtime_error(
+                  "Best Fit algorithm did not work: task1 hostname is: " +
+                   task1_hostname +
+                  " which is not equals to task2 hostname: "+task2_hostname);
+        }
+
         workflow->removeTask(task);
         workflow->removeTask(task1);
         workflow->removeTask(task2);
@@ -1468,9 +1492,19 @@ private:
     }
 };
 
+
+
+#ifdef ENABLE_BATSCHED
+
 TEST_F(BatchServiceTest, DISABLED_BestFitStandardJobSubmissionTest) {
   DO_TEST_WITH_FORK(do_BestFitTaskTest_test);
 }
+
+#else
+TEST_F(BatchServiceTest, BestFitStandardJobSubmissionTest) {
+  DO_TEST_WITH_FORK(do_BestFitTaskTest_test);
+}
+#endif
 
 void BatchServiceTest::do_BestFitTaskTest_test() {
 

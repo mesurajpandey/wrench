@@ -218,7 +218,7 @@ namespace wrench {
         void processPilotJobTerminationRequest(PilotJob *job, std::string answer_mailbox);
 
         //Process standardjob timeout
-        void processPilotJobTimeout(PilotJob *job);
+        void stopPilotJobComputeService(PilotJob *job);
 
         //free up resources
         void freeUpResources(std::set<std::tuple<std::string, unsigned long, double>> resources);

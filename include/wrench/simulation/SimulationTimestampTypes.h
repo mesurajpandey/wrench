@@ -30,7 +30,8 @@ namespace wrench {
          * @brief Constructor
          * @param task: a workflow task
          */
-        SimulationTimestampTaskCompletion(WorkflowTask *task) {
+        SimulationTimestampTaskCompletion(WorkflowTask *task, std::string hostname) {
+          this->hostname = hostname;
           this->task = task;
         }
 
@@ -50,8 +51,18 @@ namespace wrench {
           return this->task;
         }
 
+        /**
+         * @brief Retrieve the host where the task was allocated
+         *
+         * @return the hostname
+         */
+        std::string getHostName() {
+          return this->hostname;
+        }
+
     private:
         WorkflowTask *task;
+        std::string hostname;
     };
 };
 
