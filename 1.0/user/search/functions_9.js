@@ -1,0 +1,4 @@
+var searchData=
+[
+  ['multihostmulticorecomputeservice',['MultihostMulticoreComputeService',['../classwrench_1_1_multihost_multicore_compute_service.html#aebc141d091ad3c7cd8a469e2a136f75e',1,'wrench::MultihostMulticoreComputeService::MultihostMulticoreComputeService(const std::string &amp;hostname, const std::set&lt; std::tuple&lt; std::string, unsigned long, double &gt;&gt; compute_resources, double scratch_space_size, std::map&lt; std::string, std::string &gt; property_list={}, std::map&lt; std::string, std::string &gt; messagepayload_list={})'],['../classwrench_1_1_multihost_multicore_compute_service.html#a5a7c23c928d393fc0c3a5918609e8ec1',1,'wrench::MultihostMulticoreComputeService::MultihostMulticoreComputeService(const std::string &amp;hostname, const std::set&lt; std::string &gt; compute_hosts, double scratch_space_size, std::map&lt; std::string, std::string &gt; property_list={}, std::map&lt; std::string, std::string &gt; messagepayload_list={})']]]
+];
